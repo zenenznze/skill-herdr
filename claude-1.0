@@ -1,0 +1,12 @@
+#!/bin/bash
+# claude-1.0 —— 旧入口兼容垫片
+#
+# LightOS WebShell daemon 保存的 tab/pane 命令仍是 `claude-1.0`（早期入口
+# 脚本名，2026-08-07 已改名 herdr1）。daemon 重启重建 pane 时若按存储命令
+# 启动会找不到可执行文件。本垫片把旧名转发到 herdr1（herdr1 内部
+# `exec -a claude-1.0 herdr`，白名单命中逻辑不变）。
+#
+# 与 herdr1 同目录安装（install.sh 装到 ~/.local/bin/），直接运行仓库内
+# 的副本也能工作。
+
+exec "$(dirname "$(readlink -f "$0")")/herdr1" "$@"

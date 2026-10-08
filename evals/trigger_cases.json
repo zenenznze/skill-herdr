@@ -1,0 +1,69 @@
+{
+  "should_trigger": [
+    "用 herdr 开一个并行的 reviewer agent",
+    "在这个 herdr session 里跑一下测试并读输出",
+    "帮我 split 一个面板出来跑命令",
+    "让 herdr 里另一个 agent 看看这个 diff",
+    "用 herdr 的 agent prompt 给并行 agent 派活",
+    "control herdr panes and tabs",
+    "start a codex agent in a sibling pane to review my changes",
+    "wait for the agent to finish and read its output",
+    "herdr 的 agent 卡在 blocked 了帮我看看",
+    "读不到 herdr pane 的输出，帮我排查",
+    "并行跑几个 agent 分别检查不同文件",
+    "新建一个 space，里面放一个 pane 并进入指定目录",
+    "帮我在新机器上配置 herdr",
+    "把 herdr 配成每个目录一个独立 session",
+    "我只想用一个 herdr 终端，不想分那么多 session",
+    "herdr 标签页串到别的目录了怎么修",
+    "让 pi 打开时自动恢复上次的会话",
+    "装一下 herdr 的 per-directory session 配置",
+    "升级这台设备的 herdr 配置片段",
+    "我的设备要切成单 session 模式",
+    "配置我的 herdr 快捷键偏好",
+    "把这些 pane 批量整理成一个 pane 一个 tab，不要分屏",
+    "herdr 以后默认不要 split，全部放到独立 tab",
+    "按目录自动整理 pane 到对应 workspace，先列清单让我确认",
+    "整理整个实例的所有标签页，按目录创建对应的 space",
+    "整理，我直接确认",
+    "手工执行 herdr tab rename 修改这个标签页",
+    "聚焦到财务这个 pane",
+    "把名为财务的 pane 直接聚焦",
+    "focus the pane named 财务",
+    "在指定目录新建一个 herdr workspace 和独立 tab，启动 pi agent，提交 prompt 并等 2 分钟",
+    "use herdr to create a new workspace for this cwd and run a Pi agent from a prompt file",
+    "开一个新标签页让另一个 Agent 修复登录问题，完成后回到当前对话验收，先把主控标签写清楚",
+    "用 Herdr 新建 space 派 Agent 执行，主控 tab 先改成任务语义名，验收后执行 tab 标完成",
+    "用 Herdr 新开一个执行 tab，让另一个 Agent 只完成当前一步；主控验收后再启动依赖的下一步",
+    "先在当前对话完成并验证修复，再让新的 Herdr 对话只创建 Space，验收后回当前对话继续下一步"
+  ],
+  "near_neighbor": [
+    {
+      "text": "帮我后台跑个测试，把结果告诉我",
+      "expect": "no_trigger"
+    },
+    {
+      "text": "tmux 能做到 herdr 这样吗",
+      "expect": "no_trigger"
+    },
+    {
+      "text": "把实现委派给 Claude Code 快速执行",
+      "expect": "no_trigger"
+    },
+    {
+      "text": "用其他终端复用器管理窗口",
+      "expect": "no_trigger"
+    }
+  ],
+  "should_not_trigger": [
+    "把任务委派给 Claude Code 执行并保留终态",
+    "docker compose up 启动服务",
+    "写一个 Python 爬虫脚本",
+    "用 tmux 创建窗口",
+    "为什么 GPU 进程占用这么高",
+    "commit and push this repository",
+    "帮我查一下网络延迟",
+    "同步我的技能仓库到其他设备",
+    "帮我写一个 CSV 清洗脚本"
+  ]
+}

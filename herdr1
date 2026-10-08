@@ -1,0 +1,54 @@
+#!/bin/bash
+# herdr1 —— LightOS WebShell-compatible Herdr launcher.
+# 默认使用共享/default Session；~/.config/herdr/session-mode 中设置
+# mode=per-dir 后才按目录隔离。该文件不存在时使用 mode=single。
+set -u
+
+MAX_LIFETIME=${LCMD_MAX_LIFETIME:-0}
+mode=single
+mode_file="${HOME}/.config/herdr/session-mode"
+if [ -f "$mode_file" ]; then
+    mode="$(grep -E '^[[:space:]]*mode[[:space:]]*=' "$mode_file" 2>/dev/null | tail -n 1 | cut -d= -f2- | tr -d '[:space:]')"
+    [ -n "$mode" ] || mode=single
+fi
+
+session=""
+if [ "$mode" = per-dir ]; then
+    path="$(pwd -P)"
+    name="$(printf '%s' "$(basename "$path")" | tr -cs '[:alnum:]_-' '-')"
+    hash="$(printf '%s' "$path" | sha256sum | cut -c1-8)"
+    session="${name}-${hash}"
+fi
+
+unset HERDR_SESSION HERDR_SOCKET_PATH HERDR_PANE_ID HERDR_TAB_ID HERDR_WORKSPACE_ID
+
+run_herdr() {
+    if [ -n "$session" ]; then
+        HERDR_SESSION="$session" exec -a claude-1.0 herdr "$@"
+    else
+        exec -a claude-1.0 herdr "$@"
+    fi
+}
+
+while true; do
+    (
+        run_herdr "$@"
+    ) <&0 &
+    herdr_pid=$!
+    watchdog_pid=""
+    if [ "$MAX_LIFETIME" -gt 0 ] 2>/dev/null; then
+        ( sleep "$MAX_LIFETIME"; kill -KILL "$herdr_pid" 2>/dev/null ) &
+        watchdog_pid=$!
+    fi
+    wait "$herdr_pid"
+    status=$?
+    [ -n "$watchdog_pid" ] && kill "$watchdog_pid" 2>/dev/null
+    if [ "$status" -lt 128 ] || [ "$status" -eq 130 ] || [ "$status" -eq 143 ]; then
+        exit "$status"
+    fi
+    if ! [ -t 0 ] || ! : >/dev/tty 2>/dev/null; then
+        exit "$status"
+    fi
+    reset 2>/dev/null || stty sane 2>/dev/null || true
+    sleep 1 2>/dev/null || exit 0
+done
